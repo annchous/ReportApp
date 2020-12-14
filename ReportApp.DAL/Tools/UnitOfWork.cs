@@ -19,10 +19,10 @@ namespace ReportApp.DAL.Tools
             _employeeRepository = new EmployeeRepository(this);
         }
 
-        public ITaskRepository Tasks => _taskRepository;
-        public IReportRepository Reports => _reportRepository;
-        public IEmployeeRepository Employees => _employeeRepository;
-
+        public ITaskRepository TaskRepository => _taskRepository;
+        public IReportRepository ReportRepository => _reportRepository;
+        public IEmployeeRepository EmployeeRepository => _employeeRepository;
+        
         public async Task CommitAsync()
         {
             await SaveChangesAsync();

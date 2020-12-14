@@ -18,7 +18,7 @@ namespace ReportApp.Core.Services
         // TODO: add employee and task for the report
         public async Task<ReportDto> GetReportAsync(Int32 id)
         {
-            var report = await _dataBase.Reports.GetByIdAsync(id);
+            var report = await _dataBase.ReportRepository.GetByIdAsync(id);
             return new ReportDto()
             {
                 Id = report.Id,
@@ -36,7 +36,7 @@ namespace ReportApp.Core.Services
                 CreationDate = report.CreationDate ?? DateTime.MinValue,
 
             };
-            await _dataBase.Reports.InsertAsync(reportEntity);
+            await _dataBase.ReportRepository.InsertAsync(reportEntity);
             await _dataBase.CommitAsync();
         }
         // TODO: add employee and task for the report
@@ -48,13 +48,13 @@ namespace ReportApp.Core.Services
                 Body = report.Body,
                 CreationDate = report.CreationDate ?? DateTime.MinValue
             };
-            await _dataBase.Reports.UpdateAsync(reportEntity);
+            await _dataBase.ReportRepository.UpdateAsync(reportEntity);
             await _dataBase.CommitAsync();
         }
 
         public async Task DeleteReportAsync(Int32 id)
         {
-            await _dataBase.Reports.DeleteAsync(id);
+            await _dataBase.ReportRepository.DeleteAsync(id);
             await _dataBase.CommitAsync();
         }
     }

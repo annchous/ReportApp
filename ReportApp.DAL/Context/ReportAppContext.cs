@@ -8,7 +8,7 @@ namespace ReportApp.DAL.Context
         public DbSet<TaskEntity> Tasks { get; set; }
         public DbSet<ReportEntity> Reports { get; set; }
         public DbSet<EmployeeEntity> Employees { get; set; }
-
+        
         public ReportAppContext()
         {
         }

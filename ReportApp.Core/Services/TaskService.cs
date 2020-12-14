@@ -18,7 +18,7 @@ namespace ReportApp.Core.Services
         // TODO: add changes for the dto task
         public async Task<TaskDto> GetTaskAsync(Int32 id)
         {
-            var task = await _dataBase.Tasks.GetByIdAsync(id);
+            var task = await _dataBase.TaskRepository.GetByIdAsync(id);
             return new TaskDto()
             {
                 Id = task.Id,
@@ -39,7 +39,7 @@ namespace ReportApp.Core.Services
                 StartDate = task.StartDate ?? DateTime.MinValue,
                 FinishDate = task.FinishDate ?? DateTime.MinValue
             };
-            await _dataBase.Tasks.InsertAsync(taskEntity);
+            await _dataBase.TaskRepository.InsertAsync(taskEntity);
             await _dataBase.CommitAsync();
         }
         // TODO: add changes for the dto task
@@ -53,13 +53,13 @@ namespace ReportApp.Core.Services
                 StartDate = task.StartDate ?? DateTime.MinValue,
                 FinishDate = task.FinishDate ?? DateTime.MinValue
             };
-            await _dataBase.Tasks.UpdateAsync(taskEntity);
+            await _dataBase.TaskRepository.UpdateAsync(taskEntity);
             await _dataBase.CommitAsync();
         }
 
         public async Task DeleteTaskAsync(Int32 id)
         {
-            await _dataBase.Tasks.DeleteAsync(id);
+            await _dataBase.TaskRepository.DeleteAsync(id);
             await _dataBase.CommitAsync();
         }
     }

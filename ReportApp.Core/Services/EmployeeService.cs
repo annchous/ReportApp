@@ -18,7 +18,7 @@ namespace ReportApp.Core.Services
         // TODO: add tasks and employees (+boss) to the employee dto
         public async Task<EmployeeDto> GetEmployeeAsync(Int32 id)
         {
-            var employee = await _dataBase.Employees.GetByIdAsync(id);
+            var employee = await _dataBase.EmployeeRepository.GetByIdAsync(id);
             return new EmployeeDto()
             {
                 Id = employee.Id,
@@ -33,7 +33,7 @@ namespace ReportApp.Core.Services
                 Id = employee.Id,
                 Name = employee.Name
             };
-            await _dataBase.Employees.InsertAsync(employeeEntity);
+            await _dataBase.EmployeeRepository.InsertAsync(employeeEntity);
             await _dataBase.CommitAsync();
         }
         // TODO: add tasks and employees (+boss) to the employee dto
@@ -44,13 +44,13 @@ namespace ReportApp.Core.Services
                 Id = employee.Id,
                 Name = employee.Name
             };
-            await _dataBase.Employees.UpdateAsync(employeeEntity);
+            await _dataBase.EmployeeRepository.UpdateAsync(employeeEntity);
             await _dataBase.CommitAsync();
         }
 
         public async Task DeleteEmployeeAsync(Int32 id)
         {
-            await _dataBase.Employees.DeleteAsync(id);
+            await _dataBase.EmployeeRepository.DeleteAsync(id);
             await _dataBase.CommitAsync();
         }
     }
