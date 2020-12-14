@@ -20,6 +20,8 @@ namespace ReportApp.DAL.Tools
             _employeeRepository = new EmployeeRepository(this);
         }
 
+        public IEmployeeRepository Employees => _employeeRepository;
+
         public async Task CommitAsync()
         {
             await SaveChangesAsync();

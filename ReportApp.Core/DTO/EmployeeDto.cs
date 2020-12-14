@@ -6,5 +6,6 @@ namespace ReportApp.Core.DTO
     {
         public Int32 Id { get; set; }
         public String Name { get; set; }
+        public EmployeeDto Leader { get; set; }
     }
 }
