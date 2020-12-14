@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ReportApp.Core.DTO
 {
@@ -9,5 +10,6 @@ namespace ReportApp.Core.DTO
         public String Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? FinishDate { get; set; }
+        public IEnumerable<TaskChangeDto> Changes { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ReportApp.DAL.Context;
-using ReportApp.DAL.Entities;
 using ReportApp.DAL.Interfaces;
 using ReportApp.DAL.Repositories;
 
@@ -20,6 +19,8 @@ namespace ReportApp.DAL.Tools
             _employeeRepository = new EmployeeRepository(this);
         }
 
+        public ITaskRepository Tasks => _taskRepository;
+        public IReportRepository Reports => _reportRepository;
         public IEmployeeRepository Employees => _employeeRepository;
 
         public async Task CommitAsync()

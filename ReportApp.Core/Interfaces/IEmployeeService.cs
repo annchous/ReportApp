@@ -6,9 +6,9 @@ namespace ReportApp.Core.Interfaces
 {
     public interface IEmployeeService
     {
-        Task<EmployeeDto> GetEmployee(Int32 id);
-        Task CreateEmployee(EmployeeDto employee);
-        Task UpdateEmployee(EmployeeDto employee);
-        Task DeleteEmployee(Int32 id);
+        Task<EmployeeDto> GetEmployeeAsync(Int32 id);
+        Task CreateEmployeeAsync(EmployeeDto employee);
+        Task UpdateEmployeeAsync(EmployeeDto employee);
+        Task DeleteEmployeeAsync(Int32 id);
     }
 }

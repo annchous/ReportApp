@@ -15,8 +15,8 @@ namespace ReportApp.Core.Services
         {
             _dataBase = dataBase;
         }
-
-        public async Task<EmployeeDto> GetEmployee(Int32 id)
+        // TODO: add tasks and employees (+boss) to the employee dto
+        public async Task<EmployeeDto> GetEmployeeAsync(Int32 id)
         {
             var employee = await _dataBase.Employees.GetByIdAsync(id);
             return new EmployeeDto()
@@ -25,8 +25,8 @@ namespace ReportApp.Core.Services
                 Name = employee.Name
             };
         }
-
-        public async Task CreateEmployee(EmployeeDto employee)
+        // TODO: add tasks and employees (+boss) to the employee dto
+        public async Task CreateEmployeeAsync(EmployeeDto employee)
         {
             var employeeEntity = new EmployeeEntity()
             {
@@ -34,10 +34,10 @@ namespace ReportApp.Core.Services
                 Name = employee.Name
             };
             await _dataBase.Employees.InsertAsync(employeeEntity);
-            await _dataBase.SaveChangesAsync();
+            await _dataBase.CommitAsync();
         }
-
-        public async Task UpdateEmployee(EmployeeDto employee)
+        // TODO: add tasks and employees (+boss) to the employee dto
+        public async Task UpdateEmployeeAsync(EmployeeDto employee)
         {
             var employeeEntity = new EmployeeEntity()
             {
@@ -48,7 +48,7 @@ namespace ReportApp.Core.Services
             await _dataBase.CommitAsync();
         }
 
-        public async Task DeleteEmployee(Int32 id)
+        public async Task DeleteEmployeeAsync(Int32 id)
         {
             await _dataBase.Employees.DeleteAsync(id);
             await _dataBase.CommitAsync();
