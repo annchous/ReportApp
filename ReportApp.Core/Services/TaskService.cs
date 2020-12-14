@@ -15,44 +15,23 @@ namespace ReportApp.Core.Services
         {
             _dataBase = dataBase;
         }
-        // TODO: add changes for the dto task
+
         public async Task<TaskDto> GetTaskAsync(Int32 id)
         {
             var task = await _dataBase.TaskRepository.GetByIdAsync(id);
-            return new TaskDto()
-            {
-                Id = task.Id,
-                Name = task.Name,
-                Description = task.Description,
-                StartDate = task.StartDate,
-                FinishDate = task.FinishDate
-            };
+            return TaskMapper.GetInstance().Map<TaskDto>(task);
         }
-        // TODO: add changes for the dto task
+
         public async Task CreateTaskAsync(TaskDto task)
         {
-            var taskEntity = new TaskEntity()
-            {
-                Id = task.Id,
-                Name = task.Name,
-                Description = task.Description,
-                StartDate = task.StartDate ?? DateTime.MinValue,
-                FinishDate = task.FinishDate ?? DateTime.MinValue
-            };
+            var taskEntity = TaskMapper.GetInstance().Map<TaskEntity>(task);
             await _dataBase.TaskRepository.InsertAsync(taskEntity);
             await _dataBase.CommitAsync();
         }
-        // TODO: add changes for the dto task
+
         public async Task UpdateTaskAsync(TaskDto task)
         {
-            var taskEntity = new TaskEntity()
-            {
-                Id = task.Id,
-                Name = task.Name,
-                Description = task.Description,
-                StartDate = task.StartDate ?? DateTime.MinValue,
-                FinishDate = task.FinishDate ?? DateTime.MinValue
-            };
+            var taskEntity = TaskMapper.GetInstance().Map<TaskEntity>(task);
             await _dataBase.TaskRepository.UpdateAsync(taskEntity);
             await _dataBase.CommitAsync();
         }

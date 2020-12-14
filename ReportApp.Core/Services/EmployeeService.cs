@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using ReportApp.Core.DTO;
 using ReportApp.Core.Interfaces;
 using ReportApp.DAL.Entities;
@@ -15,35 +17,23 @@ namespace ReportApp.Core.Services
         {
             _dataBase = dataBase;
         }
-        // TODO: add tasks and employees (+boss) to the employee dto
+
         public async Task<EmployeeDto> GetEmployeeAsync(Int32 id)
         {
             var employee = await _dataBase.EmployeeRepository.GetByIdAsync(id);
-            return new EmployeeDto()
-            {
-                Id = employee.Id,
-                Name = employee.Name
-            };
+            return EmployeeMapper.GetInstance().Map<EmployeeDto>(employee);
         }
-        // TODO: add tasks and employees (+boss) to the employee dto
+
         public async Task CreateEmployeeAsync(EmployeeDto employee)
         {
-            var employeeEntity = new EmployeeEntity()
-            {
-                Id = employee.Id,
-                Name = employee.Name
-            };
+            var employeeEntity = EmployeeMapper.GetInstance().Map<EmployeeEntity>(employee);
             await _dataBase.EmployeeRepository.InsertAsync(employeeEntity);
             await _dataBase.CommitAsync();
         }
-        // TODO: add tasks and employees (+boss) to the employee dto
+
         public async Task UpdateEmployeeAsync(EmployeeDto employee)
         {
-            var employeeEntity = new EmployeeEntity()
-            {
-                Id = employee.Id,
-                Name = employee.Name
-            };
+            var employeeEntity = EmployeeMapper.GetInstance().Map<EmployeeEntity>(employee);
             await _dataBase.EmployeeRepository.UpdateAsync(employeeEntity);
             await _dataBase.CommitAsync();
         }

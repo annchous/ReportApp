@@ -15,39 +15,23 @@ namespace ReportApp.Core.Services
         {
             _dataBase = dataBase;
         }
-        // TODO: add employee and task for the report
+
         public async Task<ReportDto> GetReportAsync(Int32 id)
         {
             var report = await _dataBase.ReportRepository.GetByIdAsync(id);
-            return new ReportDto()
-            {
-                Id = report.Id,
-                Body = report.Body,
-                CreationDate = report.CreationDate
-            };
+            return ReportMapper.GetInstance().Map<ReportDto>(report);
         }
-        // TODO: add employee and task for the report
+
         public async Task CreateReportAsync(ReportDto report)
         {
-            var reportEntity = new ReportEntity()
-            {
-                Id = report.Id,
-                Body = report.Body,
-                CreationDate = report.CreationDate ?? DateTime.MinValue,
-
-            };
+            var reportEntity = ReportMapper.GetInstance().Map<ReportEntity>(report);
             await _dataBase.ReportRepository.InsertAsync(reportEntity);
             await _dataBase.CommitAsync();
         }
-        // TODO: add employee and task for the report
+
         public async Task UpdateReportAsync(ReportDto report)
         {
-            var reportEntity = new ReportEntity()
-            {
-                Id = report.Id,
-                Body = report.Body,
-                CreationDate = report.CreationDate ?? DateTime.MinValue
-            };
+            var reportEntity = ReportMapper.GetInstance().Map<ReportEntity>(report);
             await _dataBase.ReportRepository.UpdateAsync(reportEntity);
             await _dataBase.CommitAsync();
         }
