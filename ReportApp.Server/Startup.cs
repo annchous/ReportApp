@@ -8,7 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ReportApp.Core.Services;
 using ReportApp.DAL.Context;
 
 namespace ReportApp.Server
@@ -27,7 +30,29 @@ namespace ReportApp.Server
         {
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ReportAppContext>(options => options.UseSqlServer(connection));
+            services.AddCors();
+
+            //Adds cookie middleware to the services collection and configures it
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.AccessDeniedPath = "/forbidden";
+                    options.LoginPath = "/login";
+                });
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
             services.AddControllersWithViews();
+            services.AddRazorPages();
+            services.AddScoped<TaskService>();
+            services.AddScoped<ReportService>();
+            services.AddScoped<EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
