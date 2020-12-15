@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ReportApp.Core.DTO;
@@ -17,6 +18,14 @@ namespace ReportApp.Core.Services
         {
             _dataBase = dataBase;
         }
+
+        public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
+        {
+            var employeeEntities = await _dataBase.EmployeeRepository.GetAllAsync();
+            return employeeEntities
+                .Select(employeeEntity => EmployeeMapper.GetInstance().Map<EmployeeDto>(employeeEntity))
+                .ToList();
+            }
 
         public async Task<EmployeeDto> GetEmployeeAsync(Int32 id)
         {

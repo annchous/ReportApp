@@ -10,7 +10,7 @@ namespace ReportApp.DAL.Interfaces
         Task InsertAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(Int32 id);
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAllAsync();
         Task SaveAsync();
     }
 }

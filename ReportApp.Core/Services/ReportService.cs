@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ReportApp.Core.DTO;
 using ReportApp.Core.Interfaces;
@@ -14,6 +16,14 @@ namespace ReportApp.Core.Services
         public ReportService(UnitOfWork dataBase)
         {
             _dataBase = dataBase;
+        }
+
+        public async Task<IEnumerable<ReportDto>> GetAllAsync()
+        {
+            var reportEntities = await _dataBase.ReportRepository.GetAllAsync();
+            return reportEntities
+                .Select(reportEntity => ReportMapper.GetInstance().Map<ReportDto>(reportEntity))
+                .ToList();
         }
 
         public async Task<ReportDto> GetReportAsync(Int32 id)

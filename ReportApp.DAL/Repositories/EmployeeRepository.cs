@@ -18,9 +18,9 @@ namespace ReportApp.DAL.Repositories
             _context = context;
         }
 
-        public IEnumerable<EmployeeEntity> GetAll()
+        public async Task<IEnumerable<EmployeeEntity>> GetAllAsync()
         {
-            return _context.Employees;
+            return await _context.Employees.ToListAsync();
         }
 
         public async Task<EmployeeEntity> GetByIdAsync(Int32 id)
