@@ -48,6 +48,11 @@ namespace ReportApp.DAL.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
+        }
     }
 
     public static class ReportRepositoryExtensions

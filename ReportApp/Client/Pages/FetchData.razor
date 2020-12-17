@@ -1,0 +1,28 @@
+﻿@page "/fetchdata"
+@using ReportApp.Shared
+@using ReportApp.Core.DTO
+@inject HttpClient Http
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (tasks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>Hello</p>
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+    private List<TaskDto> tasks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tasks = await Http.GetFromJsonAsync<List<TaskDto>>("api/task/get-all");
+    }
+
+}

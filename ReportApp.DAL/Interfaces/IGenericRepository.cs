@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ReportApp.DAL.Interfaces
 {
-    public interface IGenericRepository<TEntity> where TEntity : class
+    public interface IGenericRepository<TEntity> : IDisposable where TEntity : class
     {
         Task<TEntity> GetByIdAsync(Int32 id);
         Task InsertAsync(TEntity entity);
