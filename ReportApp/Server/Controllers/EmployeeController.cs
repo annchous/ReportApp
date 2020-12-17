@@ -27,21 +27,21 @@ namespace ReportApp.Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet("get-id")]
         public async Task<ActionResult<EmployeeDto>> GetEmployeeByIdAsync(Int32 id)
         {
             var result = await _employeeService.GetEmployeeAsync(id);
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult> CreateEmployeeAsync(EmployeeDto employee)
         {
             await _employeeService.CreateEmployeeAsync(employee);
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("update")]
         public async Task<ActionResult> UpdateEmployeeAsync(EmployeeDto employee)
         {
             await _employeeService.UpdateEmployeeAsync(employee);
