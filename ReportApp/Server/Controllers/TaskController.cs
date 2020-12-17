@@ -28,21 +28,21 @@ namespace ReportApp.Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet("get-id")]
         public async Task<ActionResult<TaskDto>> GetTaskByIdAsync(Int32 id)
         {
             var result = await _taskService.GetTaskAsync(id);
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult> CreateTaskAsync(TaskDto task)
         {
             await _taskService.CreateTaskAsync(task);
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("update")]
         public async Task<ActionResult> UpdateTaskAsync(TaskDto task)
         {
             await _taskService.UpdateTaskAsync(task);

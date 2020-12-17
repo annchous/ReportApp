@@ -13,7 +13,15 @@
 }
 else
 {
+    for (int i = 0; i < 3; i++)
+    {
+        Task.Run(() => AddTask(i));
+    }
     <p>Hello</p>
+    foreach (var task in tasks)
+    {
+        <p>Id: @task.Id, Name: @task.Name</p>
+    }
 }
 
 @code {
@@ -23,6 +31,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         tasks = await Http.GetFromJsonAsync<List<TaskDto>>("api/task/get-all");
+    }
+
+    private async Task AddTask(Int32 n)
+    {
+        await Http.PostAsJsonAsync("api/task/add", new TaskDto() { Name = "Task", Description = "Some text", StartDate = DateTime.Now, FinishDate = DateTime.Now.AddDays(1), Employee = null, Changes = null});
     }
 
 }

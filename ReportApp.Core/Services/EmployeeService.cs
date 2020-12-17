@@ -26,26 +26,26 @@ namespace ReportApp.Core.Services
         {
             var employeeEntities = await _repository.GetAllAsync();
             return employeeEntities
-                .Select(employeeEntity => EmployeeMapper.GetInstance().Map<EmployeeDto>(employeeEntity))
+                .Select(employeeEntity => EmployeeMapper.GetToDtoMapper().Map<EmployeeDto>(employeeEntity))
                 .ToList();
             }
 
         public async Task<EmployeeDto> GetEmployeeAsync(Int32 id)
         {
             var employee = await _repository.GetByIdAsync(id);
-            return EmployeeMapper.GetInstance().Map<EmployeeDto>(employee);
+            return EmployeeMapper.GetToDtoMapper().Map<EmployeeDto>(employee);
         }
 
         public async Task CreateEmployeeAsync(EmployeeDto employee)
         {
-            var employeeEntity = EmployeeMapper.GetInstance().Map<EmployeeEntity>(employee);
+            var employeeEntity = EmployeeMapper.GetFromDtoMapper().Map<EmployeeEntity>(employee);
             await _repository.InsertAsync(employeeEntity);
             await _repository.SaveAsync();
         }
 
         public async Task UpdateEmployeeAsync(EmployeeDto employee)
         {
-            var employeeEntity = EmployeeMapper.GetInstance().Map<EmployeeEntity>(employee);
+            var employeeEntity = EmployeeMapper.GetFromDtoMapper().Map<EmployeeEntity>(employee);
             await _repository.UpdateAsync(employeeEntity);
             await _repository.SaveAsync();
         }

@@ -16,9 +16,14 @@ namespace ReportApp.Core.DTO
 
     public static class EmployeeMapper
     {
-        private static Mapper _instance;
-        public static Mapper GetInstance() => _instance ??= new Mapper
-            (new MapperConfiguration(cfg => 
+        private static Mapper _toDtoMapper;
+        private static Mapper _fromDtoMapper;
+        public static Mapper GetToDtoMapper() => _toDtoMapper ??= new Mapper
+        (new MapperConfiguration(cfg =>
             cfg.CreateMap<EmployeeEntity, EmployeeDto>()));
+
+        public static Mapper GetFromDtoMapper() => _fromDtoMapper ??= new Mapper
+        (new MapperConfiguration(cfg =>
+            cfg.CreateMap<EmployeeDto, EmployeeEntity>()));
     }
 }

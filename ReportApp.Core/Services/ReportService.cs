@@ -25,26 +25,26 @@ namespace ReportApp.Core.Services
         {
             var reportEntities = await _repository.GetAllAsync();
             return reportEntities
-                .Select(reportEntity => ReportMapper.GetInstance().Map<ReportDto>(reportEntity))
+                .Select(reportEntity => ReportMapper.GetToDtoMapper().Map<ReportDto>(reportEntity))
                 .ToList();
         }
 
         public async Task<ReportDto> GetReportAsync(Int32 id)
         {
             var report = await _repository.GetByIdAsync(id);
-            return ReportMapper.GetInstance().Map<ReportDto>(report);
+            return ReportMapper.GetToDtoMapper().Map<ReportDto>(report);
         }
 
         public async Task CreateReportAsync(ReportDto report)
         {
-            var reportEntity = ReportMapper.GetInstance().Map<ReportEntity>(report);
+            var reportEntity = ReportMapper.GetFromDtoMapper().Map<ReportEntity>(report);
             await _repository.InsertAsync(reportEntity);
             await _repository.SaveAsync();
         }
 
         public async Task UpdateReportAsync(ReportDto report)
         {
-            var reportEntity = ReportMapper.GetInstance().Map<ReportEntity>(report);
+            var reportEntity = ReportMapper.GetFromDtoMapper().Map<ReportEntity>(report);
             await _repository.UpdateAsync(reportEntity);
             await _repository.SaveAsync();
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using AutoMapper;
 using ReportApp.DAL.Entities;
 
@@ -18,9 +19,14 @@ namespace ReportApp.Core.DTO
 
     public static class TaskMapper
     {
-        private static Mapper _instance;
-        public static Mapper GetInstance() => _instance ??= new Mapper
+        private static Mapper _toDtoMapper;
+        private static Mapper _fromDtoMapper;
+        public static Mapper GetToDtoMapper() => _toDtoMapper ??= new Mapper
         (new MapperConfiguration(cfg =>
             cfg.CreateMap<TaskEntity, TaskDto>()));
+
+        public static Mapper GetFromDtoMapper() => _fromDtoMapper ??= new Mapper
+        (new MapperConfiguration(cfg =>
+            cfg.CreateMap<TaskDto, TaskEntity>()));
     }
 }
