@@ -15,6 +15,7 @@ namespace ReportApp.DAL.Context
 
         public ReportAppContext(DbContextOptions<ReportAppContext> options) : base(options)
         {
+            Database.EnsureCreated();
         }
     }
 }
