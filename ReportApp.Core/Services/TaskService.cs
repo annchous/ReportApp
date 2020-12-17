@@ -4,23 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using ReportApp.Core.DTO;
 using ReportApp.Core.Interfaces;
+using ReportApp.DAL.Context;
 using ReportApp.DAL.Entities;
+using ReportApp.DAL.Interfaces;
+using ReportApp.DAL.Repositories;
 using ReportApp.DAL.Tools;
 
 namespace ReportApp.Core.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly UnitOfWork _dataBase;
+        private readonly ITaskRepository _repository;
 
-        public TaskService(UnitOfWork dataBase)
+        public TaskService(ReportAppContext context)
         {
-            _dataBase = dataBase;
+            _repository = new TaskRepository(context);
         }
 
         public async Task<IEnumerable<TaskDto>> GetAllAsync()
         {
-            var taskEntities = await _dataBase.TaskRepository.GetAllAsync();
+            var taskEntities = await _repository.GetAllAsync();
             return taskEntities
                 .Select(taskEntity => TaskMapper.GetInstance().Map<TaskDto>(taskEntity))
                 .ToList();
@@ -28,28 +31,28 @@ namespace ReportApp.Core.Services
 
         public async Task<TaskDto> GetTaskAsync(Int32 id)
         {
-            var task = await _dataBase.TaskRepository.GetByIdAsync(id);
+            var task = await _repository.GetByIdAsync(id);
             return TaskMapper.GetInstance().Map<TaskDto>(task);
         }
 
         public async Task CreateTaskAsync(TaskDto task)
         {
             var taskEntity = TaskMapper.GetInstance().Map<TaskEntity>(task);
-            await _dataBase.TaskRepository.InsertAsync(taskEntity);
-            await _dataBase.CommitAsync();
+            await _repository.InsertAsync(taskEntity);
+            await _repository.SaveAsync();
         }
 
         public async Task UpdateTaskAsync(TaskDto task)
         {
             var taskEntity = TaskMapper.GetInstance().Map<TaskEntity>(task);
-            await _dataBase.TaskRepository.UpdateAsync(taskEntity);
-            await _dataBase.CommitAsync();
+            await _repository.UpdateAsync(taskEntity);
+            await _repository.SaveAsync();
         }
 
         public async Task DeleteTaskAsync(Int32 id)
         {
-            await _dataBase.TaskRepository.DeleteAsync(id);
-            await _dataBase.CommitAsync();
+            await _repository.DeleteAsync(id);
+            await _repository.SaveAsync();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ReportApp.Core.DTO;
+using ReportApp.Core.Interfaces;
 using ReportApp.Core.Services;
 
 namespace ReportApp.Server.Controllers
@@ -13,9 +14,9 @@ namespace ReportApp.Server.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private readonly TaskService _taskService;
+        private readonly ITaskService _taskService;
 
-        public TaskController(TaskService taskService)
+        public TaskController(ITaskService taskService)
         {
             _taskService = taskService;
         }

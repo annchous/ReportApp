@@ -36,12 +36,16 @@ namespace ReportApp.Server
             services.AddCors();
 
             services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
+            
+            services.AddTransient<ITaskRepository, TaskRepository>();
+            services.AddTransient<IReportRepository, ReportRepository>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<ITaskService, TaskService>();
+            services.AddTransient<IReportService, ReportService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
-
-            services.AddScoped<ITaskRepository, TaskRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ITaskService, TaskService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
