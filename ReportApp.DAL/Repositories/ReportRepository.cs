@@ -31,11 +31,13 @@ namespace ReportApp.DAL.Repositories
         public async Task InsertAsync(ReportEntity report)
         {
             await _context.Reports.AddAsync(report);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Int32 id)
         {
             await _context.Reports.DeleteReportAsync(id);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(ReportEntity report)

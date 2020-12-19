@@ -1,0 +1,34 @@
+﻿@page "/allemployees"
+
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>All employees</h3>
+
+@if (_employees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MatTable Items="@_employees" class="mat-elevation-z5">
+        <MatTableHeader>
+            <th style="width: 100px">Id</th>
+            <th style="width: 300px">Name</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td style="width: 100px">@context.Id</td>
+            <td style="width: 300px">@context.Name</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@code {
+    private List<EmployeeDto> _employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
+    }
+}

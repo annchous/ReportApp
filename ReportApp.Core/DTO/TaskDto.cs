@@ -10,11 +10,12 @@ namespace ReportApp.Core.DTO
     {
         public Int32 Id { get; set; }
         public String Name { get; set; }
+        public Int32 EmployeeId { get; set; }
         public String Description { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? FinishDate { get; set; }
-        public EmployeeDto Employee { get; set; }
-        public IEnumerable<TaskChangeDto> Changes { get; set; }
+        public DateTime? StartDate { get; set; } = DateTime.Now;
+        public DateTime? FinishDate { get; set; } = DateTime.MaxValue;
+        //public EmployeeDto Employee { get; set; } = new EmployeeDto();
+        //public IEnumerable<TaskChangeDto> Changes { get; set; } = new List<TaskChangeDto>();
     }
 
     public static class TaskMapper

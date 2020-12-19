@@ -1,0 +1,37 @@
+﻿@page "/newemployee"
+
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>New employee</h3>
+<br />
+
+<EditForm Model="@_employeeDto">
+    <div>
+        <p>
+            <MatTextField @bind-Value="@_employeeDto.Name" Required="true" Label="Name" Outlined="true"></MatTextField>
+        </p>
+        <p>
+            <MatTextField @bind-Value="@_employeeDto.LeaderId" Required="true" Label="Leader ID" Outlined="true"></MatTextField>
+        </p>
+    </div>
+    <div>
+        <MatButton Type="submit" OnClick="@SubmitNewEmployee" Unelevated="true" Style="background-color: limegreen">Submit</MatButton>
+        &nbsp;
+        <MatButton Unelevated="true" OnClick="@ResetEmployee" Style="background-color: dimgray">Reset</MatButton>
+    </div>
+    <br />
+</EditForm>
+
+@code {
+    private EmployeeDto _employeeDto = new EmployeeDto();
+
+    private async Task SubmitNewEmployee()
+    {
+        if (_employeeDto.LeaderId == 0) _employeeDto.LeaderId = _employeeDto.Id;
+        await Http.PostAsJsonAsync<EmployeeDto>("api/employee/add", _employeeDto);
+    }
+
+    private void ResetEmployee() => _employeeDto = new EmployeeDto();
+}

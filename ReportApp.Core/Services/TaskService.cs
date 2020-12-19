@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using ReportApp.Core.DTO;
 using ReportApp.Core.Interfaces;
 using ReportApp.DAL.Context;
@@ -14,45 +15,49 @@ namespace ReportApp.Core.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly ITaskRepository _repository;
+        private readonly IMapper _mapper;
+        private readonly ITaskRepository _taskRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public TaskService(ReportAppContext context)
+        public TaskService(ReportAppContext context, IMapper mapper)
         {
-            _repository = new TaskRepository(context);
+            _taskRepository = new TaskRepository(context);
+            _employeeRepository = new EmployeeRepository(context);
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<TaskDto>> GetAllAsync()
         {
-            var taskEntities = await _repository.GetAllAsync();
+            var taskEntities = await _taskRepository.GetAllAsync();
             return taskEntities
-                .Select(taskEntity => TaskMapper.GetToDtoMapper().Map<TaskDto>(taskEntity))
+                .Select(taskEntity => _mapper.Map<TaskDto>(taskEntity))
                 .ToList();
         }
 
         public async Task<TaskDto> GetTaskAsync(Int32 id)
         {
-            var task = await _repository.GetByIdAsync(id);
-            return TaskMapper.GetToDtoMapper().Map<TaskDto>(task);
+            var task = await _taskRepository.GetByIdAsync(id);
+            return _mapper.Map<TaskDto>(task);
         }
 
         public async Task CreateTaskAsync(TaskDto task)
         {
-            var taskEntity = TaskMapper.GetFromDtoMapper().Map<TaskEntity>(task);
-            await _repository.InsertAsync(taskEntity);
-            await _repository.SaveAsync();
+            var taskEntity = _mapper.Map<TaskEntity>(task);
+            await _taskRepository.InsertAsync(taskEntity);
+            await _taskRepository.SaveAsync();
         }
 
         public async Task UpdateTaskAsync(TaskDto task)
         {
-            var taskEntity = TaskMapper.GetFromDtoMapper().Map<TaskEntity>(task);
-            await _repository.UpdateAsync(taskEntity);
-            await _repository.SaveAsync();
+            var taskEntity = _mapper.Map<TaskEntity>(task);
+            await _taskRepository.UpdateAsync(taskEntity);
+            await _taskRepository.SaveAsync();
         }
 
         public async Task DeleteTaskAsync(Int32 id)
         {
-            await _repository.DeleteAsync(id);
-            await _repository.SaveAsync();
+            await _taskRepository.DeleteAsync(id);
+            await _taskRepository.SaveAsync();
         }
     }
 }

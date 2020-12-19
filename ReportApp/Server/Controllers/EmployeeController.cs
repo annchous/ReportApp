@@ -27,7 +27,7 @@ namespace ReportApp.Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get-id")]
+        [HttpGet("get-id/{id}")]
         public async Task<ActionResult<EmployeeDto>> GetEmployeeByIdAsync(Int32 id)
         {
             var result = await _employeeService.GetEmployeeAsync(id);

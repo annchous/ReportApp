@@ -15,37 +15,39 @@ namespace ReportApp.Core.Services
 {
     public class EmployeeService : IEmployeeService
     {
+        private readonly IMapper _mapper;
         private readonly IEmployeeRepository _repository;
 
-        public EmployeeService(ReportAppContext context)
+        public EmployeeService(ReportAppContext context, IMapper mapper)
         {
             _repository = new EmployeeRepository(context);
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
         {
             var employeeEntities = await _repository.GetAllAsync();
             return employeeEntities
-                .Select(employeeEntity => EmployeeMapper.GetToDtoMapper().Map<EmployeeDto>(employeeEntity))
+                .Select(employeeEntity => _mapper.Map<EmployeeDto>(employeeEntity))
                 .ToList();
             }
 
         public async Task<EmployeeDto> GetEmployeeAsync(Int32 id)
         {
             var employee = await _repository.GetByIdAsync(id);
-            return EmployeeMapper.GetToDtoMapper().Map<EmployeeDto>(employee);
+            return _mapper.Map<EmployeeDto>(employee);
         }
 
         public async Task CreateEmployeeAsync(EmployeeDto employee)
         {
-            var employeeEntity = EmployeeMapper.GetFromDtoMapper().Map<EmployeeEntity>(employee);
+            var employeeEntity = _mapper.Map<EmployeeEntity>(employee);
             await _repository.InsertAsync(employeeEntity);
             await _repository.SaveAsync();
         }
 
         public async Task UpdateEmployeeAsync(EmployeeDto employee)
         {
-            var employeeEntity = EmployeeMapper.GetFromDtoMapper().Map<EmployeeEntity>(employee);
+            var employeeEntity = _mapper.Map<EmployeeEntity>(employee);
             await _repository.UpdateAsync(employeeEntity);
             await _repository.SaveAsync();
         }

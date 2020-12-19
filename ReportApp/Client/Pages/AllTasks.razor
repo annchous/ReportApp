@@ -1,0 +1,49 @@
+﻿@page "/alltasks"
+
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>All tasks</h3>
+
+@if (_tasks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<MatTable Items="@_tasks" class="mat-elevation-z5">
+    <MatTableHeader>
+        <th style="width: 100px">Id</th>
+        <th style="width: 300px">Title</th>
+        <th style="width: 600px">Description</th>
+        <th style="width: 150px">Start date</th>
+        <th style="width: 150px">Finish date</th>
+        <th style="width: 80px">Employee</th>
+        <th style="width: 80px">Changes</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td style="width: 100px">@context.Id</td>
+        <td style="width: 300px">@context.Name</td>
+        <td style="width: 600px">@context.Description</td>
+        <td style="width: 150px">@context.StartDate</td>
+        <td style="width: 150px">@context.FinishDate</td>
+        <td style="width: 80px">
+            <MatButton Link="@NavigateToEmployeeProfile(@context.EmployeeId)" Raised="true" Style="background-color: lightsalmon; color: black">Profile</MatButton>
+        </td>
+        <td style="width: 80px">
+            <MatButton Raised="true" Style="background-color: cadetblue">View</MatButton>
+        </td>
+    </MatTableRow>
+</MatTable>
+}
+
+@code {
+    private List<TaskDto> _tasks;
+    private static String NavigateToEmployeeProfile(Int32 id) => $"/employee/profile/{id}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _tasks = await Http.GetFromJsonAsync<List<TaskDto>>("api/task/get-all");
+    }
+}

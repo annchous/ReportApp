@@ -1,20 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ReportApp.Core.Interfaces;
+using ReportApp.Core.Mappers;
 using ReportApp.Core.Services;
 using ReportApp.DAL.Context;
-using ReportApp.DAL.Entities;
 using ReportApp.DAL.Interfaces;
 using ReportApp.DAL.Repositories;
-using ReportApp.DAL.Tools;
-using ReportApp.Shared;
 
 namespace ReportApp.Server
 {
@@ -35,8 +31,16 @@ namespace ReportApp.Server
             services.AddDbContext<ReportAppContext>(options => options.UseSqlServer(connection));
             services.AddCors();
 
-            services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
-            
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new TaskMappingProfile());
+                mc.AddProfile(new ReportMappingProfile());
+                mc.AddProfile(new EmployeeMappingProfile());
+            });
+
+            var mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddTransient<ITaskRepository, TaskRepository>();
             services.AddTransient<IReportRepository, ReportRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();

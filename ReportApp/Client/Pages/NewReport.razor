@@ -1,0 +1,36 @@
+﻿@page "/newreport"
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>NewReport</h3>
+<br />
+
+<EditForm Model="@_reportDto">
+    <div>
+        <p>
+            <MatTextField @bind-Value="@_reportDto.Body" Required="true" Label="Description" Outlined="true" TextArea="true" Style="width: 500px; height: 250px"></MatTextField>
+        </p>
+        <p>
+            <MatTextField @bind-Value="@_reportDto.EmployeeId" Required="true" Label="Employee ID" Outlined="true"></MatTextField>
+        </p>
+    </div>
+    <div>
+        <MatButton Type="submit" OnClick="@SubmitNewReport" Unelevated="true" Style="background-color: limegreen">Submit</MatButton>
+        &nbsp;
+        <MatButton Unelevated="true" OnClick="@ResetReport" Style="background-color: dimgray">Reset</MatButton>
+    </div>
+    <br />
+</EditForm>
+
+@code {
+    private ReportDto _reportDto = new ReportDto();
+
+    private async Task SubmitNewReport()
+    {
+        await Http.PostAsJsonAsync<ReportDto>("api/report/add", _reportDto);
+    //Navigation.NavigateTo("/alltasks", true);
+    }
+
+    private void ResetReport() => _reportDto = new ReportDto();
+}
