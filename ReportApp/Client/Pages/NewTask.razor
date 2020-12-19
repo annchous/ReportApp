@@ -2,7 +2,6 @@
 @using ReportApp.Core.DTO
 
 @inject HttpClient Http
-@inject NavigationManager Navigation
 
 <h3>New task</h3>
 <br/>
@@ -20,7 +19,7 @@
                 <b>Start date:</b>
             </p>
             <MatDatePicker @bind-Value="@_taskDto.StartDate" EnableTime="true" Enable24hours="true" Outlined="true"></MatDatePicker>
-        </p>
+            </p>
         <p>
             <p>
                 <b>Finish date:</b>
@@ -28,9 +27,11 @@
             <MatDatePicker @bind-Value="@_taskDto.FinishDate" EnableTime="true" Enable24hours="true" Outlined="true"></MatDatePicker>
         </p>
         <p>
-            <p>
-                <MatTextField @bind-Value="@_taskDto.EmployeeId" Required="true" Label="Employee ID" Outlined="true"></MatTextField>
-            </p>
+            <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Outlined="true">
+                <ItemTemplate Context="e">
+                    <span>@e?.Id</span>
+                </ItemTemplate>
+            </MatSelectItem>
         </p>
     </div>
     <div>
@@ -43,17 +44,18 @@
 
 @code {
     private TaskDto _taskDto = new TaskDto();
+    private EmployeeDto _selectedEmployeeDto;
+    private List<EmployeeDto> _employees = new List<EmployeeDto>();
 
-    private async Task<List<EmployeeDto>> AllEmployees()
+    protected override async Task OnInitializedAsync()
     {
-        var employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
-        return employees;
+        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
     }
 
     private async Task SubmitNewTask()
     {
+        _taskDto.EmployeeId = _selectedEmployeeDto.Id;
         await Http.PostAsJsonAsync<TaskDto>("api/task/add", _taskDto);
-        //Navigation.NavigateTo("/alltasks", true);
     }
 
     private void ResetTask() => _taskDto = new TaskDto();

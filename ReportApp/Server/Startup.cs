@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
+using MatBlazor;
 using Microsoft.EntityFrameworkCore;
 using ReportApp.Core.Interfaces;
 using ReportApp.Core.Mappers;

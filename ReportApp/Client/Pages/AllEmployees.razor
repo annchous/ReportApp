@@ -23,7 +23,7 @@ else
             <td style="width: 100px">@context.Id</td>
             <td style="width: 1200px">@context.Name</td>
             <td style="width: 80px">
-                <MatButton Link="@NavigateToLeaderProfile(@context.LeaderId)" Raised="true" Style="background-color: lightsalmon">Profile</MatButton>
+                <MatButton Link="@NavigateToLeaderProfile(@context.LeaderId ?? @context.Id)" Raised="true" Style="background-color: lightsalmon">Profile</MatButton>
             </td>
             <td style="width: 80px">
                 <MatButton Raised="true" Style="background-color: cadetblue">Edit</MatButton>

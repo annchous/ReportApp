@@ -3,6 +3,8 @@
 @using ReportApp.Core.DTO
 
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IMatDialogService MatDialogService
 
 <h3>All tasks</h3>
 
@@ -12,34 +14,38 @@
 }
 else
 {
-<MatTable Items="@_tasks" class="mat-elevation-z5">
-    <MatTableHeader>
-        <th style="width: 100px">Id</th>
-        <th style="width: 280px">Title</th>
-        <th style="width: 540px">Description</th>
-        <th style="width: 150px">Start date</th>
-        <th style="width: 150px">Finish date</th>
-        <th style="width: 80px">Employee</th>
-        <th style="width: 80px">Changes</th>
-        <th style="width: 80px"></th>
-    </MatTableHeader>
-    <MatTableRow>
-        <td style="width: 100px">@context.Id</td>
-        <td style="width: 280px">@context.Name</td>
-        <td style="width: 540px">@context.Description</td>
-        <td style="width: 150px">@context.StartDate</td>
-        <td style="width: 150px">@context.FinishDate</td>
-        <td style="width: 80px">
-            <MatButton Link="@NavigateToEmployeeProfile(@context.EmployeeId)" Raised="true" Style="background-color: lightsalmon">Profile</MatButton>
-        </td>
-        <td style="width: 80px">
-            <MatButton Raised="true" Style="background-color: cornflowerblue">View</MatButton>
-        </td>
-        <td style="width: 80px">
-            <MatButton Raised="true" Style="background-color: cadetblue">Edit</MatButton>
-        </td>
-    </MatTableRow>
-</MatTable>
+    <MatTable Items="@_tasks" class="mat-elevation-z5">
+        <MatTableHeader>
+            <th style="width: 100px">Id</th>
+            <th style="width: 280px">Title</th>
+            <th style="width: 540px">Description</th>
+            <th style="width: 150px">Start date</th>
+            <th style="width: 150px">Finish date</th>
+            <th style="width: 80px">Employee</th>
+            <th style="width: 80px">Changes</th>
+            <th style="width: 80px"></th>
+            <th style="width: 80px"></th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td style="width: 100px">@context.Id</td>
+            <td style="width: 240px">@context.Name</td>
+            <td style="width: 500px">@context.Description</td>
+            <td style="width: 150px">@context.StartDate</td>
+            <td style="width: 150px">@context.FinishDate</td>
+            <td style="width: 80px">
+                <MatButton Link="@NavigateToEmployeeProfile(@context.EmployeeId)" Raised="true" Style="background-color: lightsalmon">Profile</MatButton>
+            </td>
+            <td style="width: 80px">
+                <MatButton Raised="true" Style="background-color: cornflowerblue">View</MatButton>
+            </td>
+            <td style="width: 80px">
+                <MatButton Raised="true" Style="background-color: cadetblue">Edit</MatButton>
+            </td>
+            <td style="width: 80px">
+                <MatButton OnClick="() => DeleteTask(context)" Raised="true" Style="background-color: lightslategray">Delete</MatButton>
+            </td>
+        </MatTableRow>
+    </MatTable>
 }
 
 @code {
@@ -49,5 +55,13 @@ else
     protected override async Task OnInitializedAsync()
     {
         _tasks = await Http.GetFromJsonAsync<List<TaskDto>>("api/task/get-all");
+    }
+
+    private async Task DeleteTask(TaskDto task)
+    {
+        var result = await MatDialogService.AskAsync("Are you sure you want to delete this task?", new [] { "Yes", "Cancel" });
+        if (result == "Cancel") return;
+        await Http.PostAsJsonAsync<TaskDto>($"api/task/delete/{task.Id}", task);
+        NavigationManager.NavigateTo("/alltasks", true);
     }
 }
