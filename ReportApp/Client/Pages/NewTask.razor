@@ -1,6 +1,7 @@
 ﻿@page "/newtask"
 
 @using ReportApp.Core.DTO
+@using ReportApp.DAL.Tools
 
 @inject HttpClient Http
 
@@ -31,9 +32,13 @@
             Employee ID: <br />
             <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Outlined="true">
                 <ItemTemplate Context="e">
-                    <span>@e?.Id</span>
+                    <span>[@e?.Id] @e.Name</span>
                 </ItemTemplate>
             </MatSelectItem>
+        </p>
+        <p>
+            State: <br />
+            <MatRadioGroup @bind-Value="@_taskDto.State" Items="@(Enum.GetValues(typeof(TaskState)).Cast<TaskState>())"></MatRadioGroup>
         </p>
     </div>
     <div>

@@ -49,6 +49,8 @@ namespace ReportApp.Server
             services.AddTransient<ITaskService, TaskService>();
             services.AddTransient<IReportService, ReportService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<ITaskChangeRepository, TaskChangeRepository>();
+            services.AddTransient<ITaskChangeService, TaskChangeService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

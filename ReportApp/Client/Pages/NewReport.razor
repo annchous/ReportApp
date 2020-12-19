@@ -15,7 +15,7 @@
             Employee ID: <br />
             <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Outlined="true">
                 <ItemTemplate Context="e">
-                    <span>@e?.Id</span>
+                    <span>[@e?.Id] @e.Name</span>
                 </ItemTemplate>
             </MatSelectItem>
         </p>

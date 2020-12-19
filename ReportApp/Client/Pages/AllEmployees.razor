@@ -5,10 +5,11 @@
 @inject HttpClient Http
 
 <h3>All employees</h3>
+<br />
 
 @if (_employees == null)
 {
-    <p><em>Loading...</em></p>
+    <p><MatProgressBar Indeterminate="true"></MatProgressBar></p>
 }
 else
 {

@@ -7,20 +7,22 @@
 @inject IMatDialogService MatDialogService
 
 <h3>All tasks</h3>
+<br />
 
 @if (_tasks == null)
 {
-    <p><em>Loading...</em></p>
+    <p><MatProgressBar Indeterminate="true"></MatProgressBar></p>
 }
 else
 {
     <MatTable Items="@_tasks" class="mat-elevation-z5">
         <MatTableHeader>
             <th style="width: 100px">Id</th>
-            <th style="width: 280px">Title</th>
-            <th style="width: 540px">Description</th>
+            <th style="width: 220px">Title</th>
+            <th style="width: 500px">Description</th>
             <th style="width: 150px">Start date</th>
             <th style="width: 150px">Finish date</th>
+            <th style="width: 100px">State</th>
             <th style="width: 80px">Employee</th>
             <th style="width: 80px">Changes</th>
             <th style="width: 80px"></th>
@@ -32,6 +34,7 @@ else
             <td style="width: 500px">@context.Description</td>
             <td style="width: 150px">@context.StartDate</td>
             <td style="width: 150px">@context.FinishDate</td>
+            <th style="width: 100px; background-color: white;">@context.State</th>
             <td style="width: 80px">
                 <MatButton Link="@NavigateToEmployeeProfile(@context.EmployeeId)" Raised="true" Style="background-color: lightsalmon">Profile</MatButton>
             </td>
@@ -39,7 +42,7 @@ else
                 <MatButton Raised="true" Style="background-color: cornflowerblue">View</MatButton>
             </td>
             <td style="width: 80px">
-                <MatButton Raised="true" Style="background-color: cadetblue">Edit</MatButton>
+                <MatButton Link="@NavigateToEditTaskPage(@context.Id)" Raised="true" Style="background-color: cadetblue">Edit</MatButton>
             </td>
             <td style="width: 80px">
                 <MatButton OnClick="() => DeleteTask(context)" Raised="true" Style="background-color: lightslategray">Delete</MatButton>
@@ -51,6 +54,7 @@ else
 @code {
     private List<TaskDto> _tasks;
     private static String NavigateToEmployeeProfile(Int32 id) => $"/employee/profile/{id}";
+    private static String NavigateToEditTaskPage(Int32 taskId) => $"/edittask/{taskId}";
 
     protected override async Task OnInitializedAsync()
     {
