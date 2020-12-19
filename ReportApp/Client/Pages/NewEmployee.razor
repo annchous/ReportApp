@@ -29,7 +29,6 @@
 
     private async Task SubmitNewEmployee()
     {
-        if (_employeeDto.LeaderId == 0) _employeeDto.LeaderId = _employeeDto.Id;
         await Http.PostAsJsonAsync<EmployeeDto>("api/employee/add", _employeeDto);
     }
 

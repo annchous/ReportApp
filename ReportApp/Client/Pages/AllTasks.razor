@@ -15,24 +15,28 @@ else
 <MatTable Items="@_tasks" class="mat-elevation-z5">
     <MatTableHeader>
         <th style="width: 100px">Id</th>
-        <th style="width: 300px">Title</th>
-        <th style="width: 600px">Description</th>
+        <th style="width: 280px">Title</th>
+        <th style="width: 540px">Description</th>
         <th style="width: 150px">Start date</th>
         <th style="width: 150px">Finish date</th>
         <th style="width: 80px">Employee</th>
         <th style="width: 80px">Changes</th>
+        <th style="width: 80px"></th>
     </MatTableHeader>
     <MatTableRow>
         <td style="width: 100px">@context.Id</td>
-        <td style="width: 300px">@context.Name</td>
-        <td style="width: 600px">@context.Description</td>
+        <td style="width: 280px">@context.Name</td>
+        <td style="width: 540px">@context.Description</td>
         <td style="width: 150px">@context.StartDate</td>
         <td style="width: 150px">@context.FinishDate</td>
         <td style="width: 80px">
-            <MatButton Link="@NavigateToEmployeeProfile(@context.EmployeeId)" Raised="true" Style="background-color: lightsalmon; color: black">Profile</MatButton>
+            <MatButton Link="@NavigateToEmployeeProfile(@context.EmployeeId)" Raised="true" Style="background-color: lightsalmon">Profile</MatButton>
         </td>
         <td style="width: 80px">
-            <MatButton Raised="true" Style="background-color: cadetblue">View</MatButton>
+            <MatButton Raised="true" Style="background-color: cornflowerblue">View</MatButton>
+        </td>
+        <td style="width: 80px">
+            <MatButton Raised="true" Style="background-color: cadetblue">Edit</MatButton>
         </td>
     </MatTableRow>
 </MatTable>
