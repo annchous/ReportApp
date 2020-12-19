@@ -37,6 +37,7 @@ namespace ReportApp.Server
                 mc.AddProfile(new TaskMappingProfile());
                 mc.AddProfile(new ReportMappingProfile());
                 mc.AddProfile(new EmployeeMappingProfile());
+                mc.AddProfile(new TaskChangeMappingProfile());
             });
 
             var mapper = mapperConfig.CreateMapper();

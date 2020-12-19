@@ -17,12 +17,10 @@ namespace ReportApp.Core.Services
     {
         private readonly IMapper _mapper;
         private readonly ITaskRepository _taskRepository;
-        private readonly IEmployeeRepository _employeeRepository;
 
         public TaskService(ReportAppContext context, IMapper mapper)
         {
             _taskRepository = new TaskRepository(context);
-            _employeeRepository = new EmployeeRepository(context);
             _mapper = mapper;
         }
 
