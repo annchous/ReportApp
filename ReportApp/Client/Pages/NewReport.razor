@@ -3,7 +3,7 @@
 
 @inject HttpClient Http
 
-<h3>NewReport</h3>
+<h3>New report</h3>
 <br />
 
 <EditForm Model="@_reportDto">
@@ -12,7 +12,12 @@
             <MatTextField @bind-Value="@_reportDto.Body" Required="true" Label="Description" Outlined="true" TextArea="true" Style="width: 500px; height: 250px"></MatTextField>
         </p>
         <p>
-            <MatTextField @bind-Value="@_reportDto.EmployeeId" Required="true" Label="Employee ID" Outlined="true"></MatTextField>
+            Employee ID: <br />
+            <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Outlined="true">
+                <ItemTemplate Context="e">
+                    <span>@e?.Id</span>
+                </ItemTemplate>
+            </MatSelectItem>
         </p>
     </div>
     <div>
@@ -24,12 +29,19 @@
 </EditForm>
 
 @code {
+    private EmployeeDto _selectedEmployeeDto;
     private ReportDto _reportDto = new ReportDto();
+    private List<EmployeeDto> _employees = new List<EmployeeDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
+    }
 
     private async Task SubmitNewReport()
     {
+        _reportDto.EmployeeId = _selectedEmployeeDto.Id;
         await Http.PostAsJsonAsync<ReportDto>("api/report/add", _reportDto);
-    //Navigation.NavigateTo("/alltasks", true);
     }
 
     private void ResetReport() => _reportDto = new ReportDto();

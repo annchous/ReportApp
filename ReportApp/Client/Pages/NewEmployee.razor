@@ -13,7 +13,16 @@
             <MatTextField @bind-Value="@_employeeDto.Name" Required="true" Label="Name" Outlined="true"></MatTextField>
         </p>
         <p>
-            <MatTextField @bind-Value="@_employeeDto.LeaderId" Required="true" Label="Leader ID" Outlined="true"></MatTextField>
+            Leader ID: <br />
+            <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Disabled="@Disabled" Outlined="true">
+                <ItemTemplate Context="e">
+                    <span>[@e?.Id] @e.Name</span>
+                </ItemTemplate>
+            </MatSelectItem>
+            &nbsp;
+            <input type="checkbox" @bind="@_noLeader">
+            &nbsp;
+            No leader
         </p>
     </div>
     <div>
@@ -25,7 +34,17 @@
 </EditForm>
 
 @code {
+    private EmployeeDto _selectedEmployeeDto;
     private EmployeeDto _employeeDto = new EmployeeDto();
+    private List<EmployeeDto> _employees = new List<EmployeeDto>();
+
+    private Boolean _noLeader;
+    public Boolean Disabled => _noLeader;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
+    }
 
     private async Task SubmitNewEmployee()
     {

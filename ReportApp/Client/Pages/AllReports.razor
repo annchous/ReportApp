@@ -1,0 +1,49 @@
+﻿@page "/allreports"
+
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>All reports</h3>
+<br />
+@if (_reports == null)
+{
+
+}
+else
+{
+    <MatAccordion>
+        @foreach (var report in _reports)
+        {
+            <MatExpansionPanel>
+                <MatExpansionPanelSummary>
+                    <MatExpansionPanelHeader Style="font-size: 16px">Report ID: <b>@report.Id</b></MatExpansionPanelHeader>
+                    <MatExpansionPanelSubHeader Style="font-size: 16px">Employee name: <b>@_employees.FirstOrDefault(e => e.Id == report.EmployeeId)?.Name</b></MatExpansionPanelSubHeader>
+                </MatExpansionPanelSummary>
+                <MatExpansionPanelDetails>
+                    <p>
+                        Creation date: &nbsp;
+                        <span>@report.CreationDate.Value.ToLocalTime().ToString()</span>
+                    </p>
+                    <p>
+                        <MatTextField @bind-Value="@report.Body" ReadOnly="true" Label="Report body" Outlined="true" Style="width: 1000px; min-height: 50px"></MatTextField>
+                    </p>
+                </MatExpansionPanelDetails>
+            </MatExpansionPanel>
+        }
+        
+    </MatAccordion>
+    <br />
+}
+
+@code {
+    private List<ReportDto> _reports;
+    private List<EmployeeDto> _employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _reports = await Http.GetFromJsonAsync<List<ReportDto>>("api/report/get-all");
+        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
+    }
+
+}

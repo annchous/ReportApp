@@ -10,6 +10,7 @@ namespace ReportApp.Core.DTO
         public String Body { get; set; }
         public Int32 EmployeeId { get; set; }
         public DateTime? CreationDate { get; set; } = DateTime.Now;
+        public DateTime? LastChangeDate { get; set; } = DateTime.Now;
         //public EmployeeDto Employee { get; set; } = new EmployeeDto();
     }
 

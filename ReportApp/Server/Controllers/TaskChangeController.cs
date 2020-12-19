@@ -33,9 +33,9 @@ namespace ReportApp.Server.Controllers
             var result = await _taskChangeService.GetAllForTaskByIdAsync(taskId);
             return Ok(result);
         }
-
+        
         [HttpPost("add")]
-        public async Task<ActionResult> CreateTaskAsync(TaskChangeDto taskChange)
+        public async Task<ActionResult> CreateTaskChangeAsync(TaskChangeDto taskChange)
         {
             await _taskChangeService.CreateTaskChangeAsync(taskChange);
             return Ok();

@@ -9,6 +9,7 @@ namespace ReportApp.DAL.Entities
         public Int32 Id { get; set; }
         public String Body { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime LastChangeDate { get; set; }
         public Int32 EmployeeId { get; set; }
         //public EmployeeEntity Employee { get; set; }
     }

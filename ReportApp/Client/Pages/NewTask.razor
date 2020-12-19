@@ -1,4 +1,5 @@
 ﻿@page "/newtask"
+
 @using ReportApp.Core.DTO
 
 @inject HttpClient Http
@@ -27,6 +28,7 @@
             <MatDatePicker @bind-Value="@_taskDto.FinishDate" EnableTime="true" Enable24hours="true" Outlined="true"></MatDatePicker>
         </p>
         <p>
+            Employee ID: <br />
             <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Outlined="true">
                 <ItemTemplate Context="e">
                     <span>@e?.Id</span>
