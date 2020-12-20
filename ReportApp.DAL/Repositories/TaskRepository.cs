@@ -30,6 +30,7 @@ namespace ReportApp.DAL.Repositories
         public async Task InsertAsync(TaskEntity task)
         {
             await _context.AddAsync(task);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(TaskEntity task)
@@ -41,6 +42,7 @@ namespace ReportApp.DAL.Repositories
         public async Task DeleteAsync(Int32 id)
         {
             await _context.Tasks.DeleteTaskAsync(id);
+            await _context.SaveChangesAsync();
         }
 
         public async Task SaveAsync()

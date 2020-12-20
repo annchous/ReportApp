@@ -1,0 +1,48 @@
+﻿@page "/employee/profile/{EmployeeId:int}"
+
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>Employee profile</h3>
+<br />
+
+@if (_employee == null)
+{
+    <p><MatProgressBar Indeterminate="true"></MatProgressBar></p>
+}
+else
+{
+    <br />
+    <p><img src="Images/employee.png" style="width: 280px" alt="employee" /></p>
+    <br />
+
+    <MatList SingleSelection="true" TwoLine="true">
+        <MatListItem>
+            <MatListItemText Style="width: 500px">
+                <MatListItemPrimaryText Style="font-size: 22px">@_employee.Id</MatListItemPrimaryText>
+                <MatListItemSecondaryText>ID</MatListItemSecondaryText>
+            </MatListItemText>
+        </MatListItem>
+        <MatListDivider Style="width: 500px"></MatListDivider>
+        <MatListItem>
+            <MatListItemText Style="width: 500px">
+                <MatListItemPrimaryText Style="font-size: 22px">@_employee.Name</MatListItemPrimaryText>
+                <MatListItemSecondaryText>Name</MatListItemSecondaryText>
+            </MatListItemText>
+        </MatListItem>
+    </MatList>
+
+}
+
+@code {
+    [Parameter]
+    public Int32 EmployeeId { get; set; }
+
+    private EmployeeDto _employee = new EmployeeDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _employee = await Http.GetFromJsonAsync<EmployeeDto>($"api/employee/get-id/{EmployeeId}");
+    }
+}

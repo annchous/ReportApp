@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ReportApp.DAL.Context;
 using ReportApp.DAL.Entities;
 using ReportApp.DAL.Interfaces;
+using ReportApp.DAL.Tools;
 using Task = System.Threading.Tasks.Task;
 
 namespace ReportApp.DAL.Repositories
@@ -31,11 +32,13 @@ namespace ReportApp.DAL.Repositories
         public async Task InsertAsync(ReportEntity report)
         {
             await _context.Reports.AddAsync(report);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Int32 id)
         {
             await _context.Reports.DeleteReportAsync(id);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(ReportEntity report)
@@ -47,6 +50,11 @@ namespace ReportApp.DAL.Repositories
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Boolean> HasSprintReportAsync()
+        {
+            return await _context.Reports.AnyAsync(r => r.Type == ReportType.Sprint);
         }
 
         public void Dispose()

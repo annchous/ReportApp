@@ -1,0 +1,68 @@
+﻿@page "/allreports"
+
+@using ReportApp.Core.DTO
+@using System.Text
+@using System.Globalization
+
+@inject HttpClient Http
+@inject IMatDialogService MatDialogService
+
+<h3>All reports</h3>
+<br />
+
+@if (_reports == null)
+{
+    <p><MatProgressBar Indeterminate="true"></MatProgressBar></p>
+}
+else
+{
+    <MatAccordion>
+        @foreach (var report in _reports)
+        {
+            <MatExpansionPanel>
+                <MatExpansionPanelSummary>
+                    <MatExpansionPanelHeader Style="font-size: 16px">Report ID: <b>@report.Id</b></MatExpansionPanelHeader>
+                    <MatExpansionPanelSubHeader Style="font-size: 16px">Employee name: <b>@_employees.FirstOrDefault(e => e.Id == report.EmployeeId)?.Name</b></MatExpansionPanelSubHeader>
+                </MatExpansionPanelSummary>
+                <MatExpansionPanelDetails>
+                    <p>
+                        Creation date: &nbsp;
+                        <span>@report.CreationDate.Value.ToLocalTime().ToString(CultureInfo.InvariantCulture)</span>
+                    </p>
+                    <p>
+                        Type: &nbsp;
+                        <span>@report.Type</span>
+                    </p>
+                    <p>
+                        <MatTextField @bind-Value="@report.Body" ReadOnly="true" Label="Report body" Outlined="true" Style="width: 1000px; min-height: 100px"></MatTextField>
+                    </p>
+                    <p>
+                        <MatButton OnClick="() => OpenTask(report.TaskId)" Raised="true" Style="background-color: cornflowerblue">View task</MatButton>
+                    </p>
+                </MatExpansionPanelDetails>
+            </MatExpansionPanel>
+        }
+
+    </MatAccordion>
+    <br />
+}
+
+@code {
+    private List<ReportDto> _reports;
+    private List<EmployeeDto> _employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _reports = await Http.GetFromJsonAsync<List<ReportDto>>("api/report/get-all");
+        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
+    }
+
+    private async Task OpenTask(Int32 taskId)
+    {
+        var task = await Http.GetFromJsonAsync<TaskDto>($"api/task/get-id/{taskId}");
+        await MatDialogService.AlertAsync(new StringBuilder()
+            .Append($"[{task.Id}] ")
+            .Append(task.Name)
+            .ToString());
+    }
+}

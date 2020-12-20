@@ -28,7 +28,7 @@ namespace ReportApp.Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get-id")]
+        [HttpGet("get-id/{id}")]
         public async Task<ActionResult<TaskDto>> GetTaskByIdAsync(Int32 id)
         {
             var result = await _taskService.GetTaskAsync(id);
@@ -46,6 +46,13 @@ namespace ReportApp.Server.Controllers
         public async Task<ActionResult> UpdateTaskAsync(TaskDto task)
         {
             await _taskService.UpdateTaskAsync(task);
+            return Ok();
+        }
+
+        [HttpPost("delete/{id}")]
+        public async Task<ActionResult> DeleteTaskAsync(Int32 id)
+        {
+            await _taskService.DeleteTaskAsync(id);
             return Ok();
         }
     }

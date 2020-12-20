@@ -1,0 +1,87 @@
+﻿@page "/edittask/{TaskId:int}"
+
+@using ReportApp.Core.DTO
+@using ReportApp.DAL.Tools
+
+@inject HttpClient Http
+
+<h3>Edit task</h3>
+<br />
+
+<EditForm Model="@_newTaskDto">
+    <div>
+        <p>
+            <MatTextField @bind-Value="@_newTaskDto.Name" Label="Title" Outlined="true"></MatTextField>
+        </p>
+        <p>
+            <MatTextField @bind-Value="@_newTaskDto.Description" Label="Description" Outlined="true" TextArea="true" Style="width: 500px; height: 250px"></MatTextField>
+        </p>
+        <p>
+        <p>
+            <b>Start date:</b>
+        </p>
+        <MatDatePicker @bind-Value="@_newTaskDto.StartDate" EnableTime="true" Enable24hours="true" Outlined="true"></MatDatePicker>
+        </p>
+        <p>
+        <p>
+            <b>Finish date:</b>
+        </p>
+        <MatDatePicker @bind-Value="@_newTaskDto.FinishDate" EnableTime="true" Enable24hours="true" Outlined="true"></MatDatePicker>
+        </p>
+        <p>
+            <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Outlined="true">
+                <ItemTemplate Context="e">
+                    <span>[@e?.Id] @e.Name</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+        <p>
+            State: <br />
+            <MatRadioGroup @bind-Value="@_newTaskDto.State" Items="@(Enum.GetValues(typeof(TaskState)).Cast<TaskState>())"></MatRadioGroup>
+        </p>
+    </div>
+    <br />
+    <div>
+        <p>
+            <MatTextField @bind-Value="@_taskChangeDto.Comment" Required="true" Label="Comment" Outlined="true" TextArea="true" Style="width: 500px; height: 250px"></MatTextField>
+        </p>
+    </div>
+    <div>
+        <MatButton Type="submit" OnClick="@SubmitTaskChange" Unelevated="true" Style="background-color: limegreen">Submit</MatButton>
+        &nbsp;
+        <MatButton Unelevated="true" OnClick="@ResetTaskChange" Style="background-color: dimgray">Reset</MatButton>
+    </div>
+    <br />
+</EditForm>
+
+@code {
+    [Parameter]
+    public Int32 TaskId { get; set; }
+    private TaskDto _taskDto = new TaskDto();
+    private EmployeeDto _selectedEmployeeDto;
+    private TaskDto _newTaskDto = new TaskDto();
+    private TaskChangeDto _taskChangeDto = new TaskChangeDto();
+    private List<EmployeeDto> _employees = new List<EmployeeDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _taskDto = await Http.GetFromJsonAsync<TaskDto>($"api/task/get-id/{TaskId}");
+        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
+        _newTaskDto = _taskDto;
+    }
+
+    private async Task SubmitTaskChange()
+    {
+        _taskChangeDto.TaskId = TaskId;
+        _taskDto.EmployeeId = _selectedEmployeeDto.Id == 0 ? _taskDto.Id : _selectedEmployeeDto.Id;
+        await Http.PostAsJsonAsync<TaskDto>("api/task/update", _newTaskDto);
+        await Http.PostAsJsonAsync<TaskChangeDto>("api/taskchange/add", _taskChangeDto);
+    }
+
+    private void ResetTaskChange()
+    {
+        _newTaskDto = new TaskDto();
+        _taskChangeDto = new TaskChangeDto();
+    }
+
+}

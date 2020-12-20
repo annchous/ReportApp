@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportApp.DAL", "ReportApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportApp.Core", "ReportApp.Core\ReportApp.Core.csproj", "{17F12090-4B9D-457D-932A-67693E574659}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportApp.Server", "ReportApp\Server\ReportApp.Server.csproj", "{E9DEC219-A1FD-4B93-AA99-9830139FBDB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportApp.Server", "ReportApp\Server\ReportApp.Server.csproj", "{E9DEC219-A1FD-4B93-AA99-9830139FBDB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportApp.Client", "ReportApp\Client\ReportApp.Client.csproj", "{A4EAB186-6F87-48B6-97C3-A9708FAF7872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportApp.Client", "ReportApp\Client\ReportApp.Client.csproj", "{A4EAB186-6F87-48B6-97C3-A9708FAF7872}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportApp.Shared", "ReportApp\Shared\ReportApp.Shared.csproj", "{4C44E088-B364-4B26-AE76-682E56CA01F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportApp.Shared", "ReportApp\Shared\ReportApp.Shared.csproj", "{4C44E088-B364-4B26-AE76-682E56CA01F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

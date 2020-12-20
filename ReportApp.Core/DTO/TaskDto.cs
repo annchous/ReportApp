@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using AutoMapper;
 using ReportApp.DAL.Entities;
+using ReportApp.DAL.Tools;
 
 namespace ReportApp.Core.DTO
 {
@@ -10,23 +11,10 @@ namespace ReportApp.Core.DTO
     {
         public Int32 Id { get; set; }
         public String Name { get; set; }
+        public TaskState State { get; set; }
+        public Int32? EmployeeId { get; set; }
         public String Description { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? FinishDate { get; set; }
-        public EmployeeDto Employee { get; set; }
-        public IEnumerable<TaskChangeDto> Changes { get; set; }
-    }
-
-    public static class TaskMapper
-    {
-        private static Mapper _toDtoMapper;
-        private static Mapper _fromDtoMapper;
-        public static Mapper GetToDtoMapper() => _toDtoMapper ??= new Mapper
-        (new MapperConfiguration(cfg =>
-            cfg.CreateMap<TaskEntity, TaskDto>()));
-
-        public static Mapper GetFromDtoMapper() => _fromDtoMapper ??= new Mapper
-        (new MapperConfiguration(cfg =>
-            cfg.CreateMap<TaskDto, TaskEntity>()));
+        public DateTime? StartDate { get; set; } = DateTime.Now;
+        public DateTime? FinishDate { get; set; } = DateTime.MaxValue;
     }
 }

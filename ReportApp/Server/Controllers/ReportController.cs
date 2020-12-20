@@ -27,10 +27,17 @@ namespace ReportApp.Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get-id")]
+        [HttpGet("get-id/{id}")]
         public async Task<ActionResult<ReportDto>> GetReportByIdAsync(Int32 id)
         {
             var result = await _reportService.GetReportAsync(id);
+            return Ok(result);
+        }
+
+        [HttpGet("get-sprint")]
+        public async Task<ActionResult<ReportDto>> GetSprintReportAsync(Int32 id)
+        {
+            var result = await _reportService.GetSprintReportAsync();
             return Ok(result);
         }
 
@@ -46,6 +53,13 @@ namespace ReportApp.Server.Controllers
         {
             await _reportService.UpdateReportAsync(report);
             return Ok();
+        }
+
+        [HttpGet("has-sprint")]
+        public async Task<ActionResult<Boolean>> HasSprintReportAsync()
+        {
+            var result = await _reportService.HasSprintReportAsync();
+            return Ok(result);
         }
     }
 }

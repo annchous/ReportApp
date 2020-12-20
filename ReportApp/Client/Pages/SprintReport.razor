@@ -1,0 +1,42 @@
+﻿@page "/sprintreport"
+
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>@_header</h3>
+<br />
+
+@if (_report == null)
+{
+    <p><MatProgressBar Indeterminate="true"></MatProgressBar></p>
+}
+else
+{
+    <div>
+        <p>
+            Creation date: &nbsp;
+            <span>@_report.CreationDate.Value.ToLocalTime().ToString()</span>
+        </p>
+        <br />
+        <p>
+            <MatTextField @bind-Value="@_report.Body" ReadOnly="true" Label="Sprint report" Outlined="true" Style="width: 1000px; min-height: 250px"></MatTextField>
+        </p>
+    </div>
+}
+
+@code {
+    private ReportDto _report;
+    private String _header = "Sprint report";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var hasSprint = await Http.GetFromJsonAsync<Boolean>("api/report/has-sprint");
+        if (!hasSprint)
+        {
+            _header = "No sprint report";
+            return;
+        }
+        _report = await Http.GetFromJsonAsync<ReportDto>("api/report/get-sprint");
+    }
+}
