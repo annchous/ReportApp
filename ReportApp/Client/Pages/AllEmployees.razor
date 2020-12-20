@@ -3,6 +3,8 @@
 @using ReportApp.Core.DTO
 
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IMatDialogService MatDialogService
 
 <h3>All employees</h3>
 <br />
@@ -16,8 +18,9 @@ else
     <MatTable Items="@_employees" class="mat-elevation-z5">
         <MatTableHeader>
             <th style="width: 100px">Id</th>
-            <th style="width: 1200px">Name</th>
+            <th style="width: 1120px">Name</th>
             <th style="width: 80px">Leader</th>
+            <th style="width: 80px"></th>
             <th style="width: 80px"></th>
         </MatTableHeader>
         <MatTableRow>
@@ -27,7 +30,10 @@ else
                 <MatButton Link="@NavigateToLeaderProfile(@context.LeaderId ?? @context.Id)" Raised="true" Style="background-color: lightsalmon">Profile</MatButton>
             </td>
             <td style="width: 80px">
-                <MatButton Raised="true" Style="background-color: cadetblue">Edit</MatButton>
+                <MatButton Link="@NavigateToEditPage(@context.Id)" Raised="true" Style="background-color: cadetblue">Edit</MatButton>
+            </td>
+            <td style="width: 80px">
+                <MatButton OnClick="() => DeleteEmployee(context)" Raised="true" Style="background-color: lightslategray">Delete</MatButton>
             </td>
         </MatTableRow>
     </MatTable>
@@ -36,9 +42,18 @@ else
 @code {
     private List<EmployeeDto> _employees;
     private static String NavigateToLeaderProfile(Int32? id) => $"/employee/profile/{id}";
+    private static String NavigateToEditPage(Int32? id) => $"/editemployee/{id}";
 
     protected override async Task OnInitializedAsync()
     {
         _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
+    }
+
+    private async Task DeleteEmployee(EmployeeDto employee)
+    {
+        var result = await MatDialogService.AskAsync("Are you sure you want to delete this employee?", new[] { "Yes", "Cancel" });
+        if (result == "Cancel") return;
+        await Http.PostAsJsonAsync<EmployeeDto>($"api/employee/delete/{employee.Id}", employee);
+        NavigationManager.NavigateTo("/allemployees", true);
     }
 }

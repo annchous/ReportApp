@@ -1,0 +1,46 @@
+﻿@page "/taskchanges/{TaskId:int}"
+
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>Task changes</h3>
+<br />
+
+@if (_taskChanges == null)
+{
+    <p><MatProgressBar Indeterminate="true"></MatProgressBar></p>
+}
+else
+{
+    <MatAccordion>
+        @foreach (var taskChange in _taskChanges)
+        {
+            <MatExpansionPanel>
+                <MatExpansionPanelSummary>
+                    <MatExpansionPanelHeader Style="font-size: 16px">Task ID: <b>@taskChange.Id</b></MatExpansionPanelHeader>
+                    <MatExpansionPanelSubHeader Style="font-size: 16px">Date of change: <b>@taskChange.Date</b></MatExpansionPanelSubHeader>
+                </MatExpansionPanelSummary>
+                <MatExpansionPanelDetails>
+                    <p>
+                        <MatTextField @bind-Value="@taskChange.Comment" ReadOnly="true" Label="Comment" Outlined="true" Style="width: 1000px; min-height: 50px"></MatTextField>
+                    </p>
+                </MatExpansionPanelDetails>
+            </MatExpansionPanel>
+        }
+
+    </MatAccordion>
+    <br />
+}
+
+@code {
+    [Parameter]
+    public Int32 TaskId { get; set; }
+    private List<TaskChangeDto> _taskChanges;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _taskChanges = await Http.GetFromJsonAsync<List<TaskChangeDto>>($"api/taskchange/get-taskId/{TaskId}");
+    }
+
+}

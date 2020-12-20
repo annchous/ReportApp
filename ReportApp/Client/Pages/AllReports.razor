@@ -1,8 +1,10 @@
 ﻿@page "/allreports"
 
 @using ReportApp.Core.DTO
+@using System.Text
 
 @inject HttpClient Http
+@inject IMatDialogService MatDialogService
 
 <h3>All reports</h3>
 <br />
@@ -27,7 +29,14 @@ else
                         <span>@report.CreationDate.Value.ToLocalTime().ToString()</span>
                     </p>
                     <p>
-                        <MatTextField @bind-Value="@report.Body" ReadOnly="true" Label="Report body" Outlined="true" Style="width: 1000px; min-height: 50px"></MatTextField>
+                        Type: &nbsp;
+                        <span>@report.Type</span>
+                    </p>
+                    <p>
+                        <MatButton OnClick="() => OpenTask(report.TaskId)" Raised="true" Style="background-color: cornflowerblue">View task</MatButton>
+                    </p>
+                    <p>
+                        <MatTextField @bind-Value="@report.Body" ReadOnly="true" Label="Report body" Outlined="true" Style="width: 1000px; min-height: 150px"></MatTextField>
                     </p>
                 </MatExpansionPanelDetails>
             </MatExpansionPanel>
@@ -47,4 +56,16 @@ else
         _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
     }
 
+    private async Task OpenTask(Int32 taskId)
+    {
+        var task = Http.GetFromJsonAsync<TaskDto>($"api/task/get-id/{taskId}").Result;
+        await MatDialogService.AlertAsync(new StringBuilder()
+            .Append($"Task ID: {task.Id}")
+            .Append($"Name:\\n {task.Name}")
+            .Append($"Description:\\n {task.Description}")
+            .Append($"State: {task.State}")
+            .Append($"Start date: {task.StartDate.ToString()}")
+            .Append($"Finish date: {task.FinishDate.ToString()}")
+            .ToString());
+    }
 }

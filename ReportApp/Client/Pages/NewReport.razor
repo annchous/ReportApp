@@ -1,5 +1,6 @@
 ﻿@page "/newreport"
 @using ReportApp.Core.DTO
+@using ReportApp.DAL.Tools
 
 @inject HttpClient Http
 
@@ -12,12 +13,27 @@
             <MatTextField @bind-Value="@_reportDto.Body" Required="true" Label="Description" Outlined="true" TextArea="true" Style="width: 500px; height: 250px"></MatTextField>
         </p>
         <p>
+            Task ID: <br />
+            <MatSelectItem @bind-Value="@_selectedTaskDto" Items="@_tasks" Outlined="true">
+                <ItemTemplate Context="e">
+                    <span>[@e?.Id] @e.Name</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+        <p>
             Employee ID: <br />
             <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Outlined="true">
                 <ItemTemplate Context="e">
                     <span>[@e?.Id] @e.Name</span>
                 </ItemTemplate>
             </MatSelectItem>
+        </p>
+        <p>
+            Type: <br />
+            <MatRadioGroup @bind-Value="@_reportDto.Type">
+                <MatRadioButton Value="@ReportType.Daily" Label="Daily"></MatRadioButton>
+                <MatRadioButton Value="@ReportType.Sprint" Label="Sprint" Disabled="_hasSprint"></MatRadioButton>
+            </MatRadioGroup>
         </p>
     </div>
     <div>
@@ -29,17 +45,24 @@
 </EditForm>
 
 @code {
+    private TaskDto _selectedTaskDto;
     private EmployeeDto _selectedEmployeeDto;
     private ReportDto _reportDto = new ReportDto();
+    private List<TaskDto> _tasks = new List<TaskDto>();
     private List<EmployeeDto> _employees = new List<EmployeeDto>();
+
+    private Boolean _hasSprint;
 
     protected override async Task OnInitializedAsync()
     {
+        _hasSprint = await Http.GetFromJsonAsync<Boolean>("api/report/has-sprint");
+        _tasks = await Http.GetFromJsonAsync<List<TaskDto>>("api/task/get-all");
         _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
     }
 
     private async Task SubmitNewReport()
     {
+        _reportDto.TaskId = _selectedTaskDto.Id;
         _reportDto.EmployeeId = _selectedEmployeeDto.Id;
         await Http.PostAsJsonAsync<ReportDto>("api/report/add", _reportDto);
     }

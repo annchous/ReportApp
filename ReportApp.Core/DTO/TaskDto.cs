@@ -12,7 +12,7 @@ namespace ReportApp.Core.DTO
         public Int32 Id { get; set; }
         public String Name { get; set; }
         public TaskState State { get; set; }
-        public Int32 EmployeeId { get; set; }
+        public Int32? EmployeeId { get; set; }
         public String Description { get; set; }
         public DateTime? StartDate { get; set; } = DateTime.Now;
         public DateTime? FinishDate { get; set; } = DateTime.MaxValue;

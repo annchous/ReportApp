@@ -39,7 +39,7 @@ else
                 <MatButton Link="@NavigateToEmployeeProfile(@context.EmployeeId)" Raised="true" Style="background-color: lightsalmon">Profile</MatButton>
             </td>
             <td style="width: 80px">
-                <MatButton Raised="true" Style="background-color: cornflowerblue">View</MatButton>
+                <MatButton Link="@NavigateToTaskChangePage(@context.Id)" Raised="true" Style="background-color: cornflowerblue">View</MatButton>
             </td>
             <td style="width: 80px">
                 <MatButton Link="@NavigateToEditTaskPage(@context.Id)" Raised="true" Style="background-color: cadetblue">Edit</MatButton>
@@ -53,8 +53,9 @@ else
 
 @code {
     private List<TaskDto> _tasks;
-    private static String NavigateToEmployeeProfile(Int32 id) => $"/employee/profile/{id}";
+    private static String NavigateToEmployeeProfile(Int32? id) => $"/employee/profile/{id}";
     private static String NavigateToEditTaskPage(Int32 taskId) => $"/edittask/{taskId}";
+    private static String NavigateToTaskChangePage(Int32 taskId) => $"/taskchanges/{taskId}";
 
     protected override async Task OnInitializedAsync()
     {

@@ -47,5 +47,12 @@ namespace ReportApp.Server.Controllers
             await _employeeService.UpdateEmployeeAsync(employee);
             return Ok();
         }
+
+        [HttpPost("delete/{id}")]
+        public async Task<ActionResult> DeleteEmployeeAsync(Int32 id)
+        {
+            await _employeeService.DeleteEmployeeAsync(id);
+            return Ok();
+        }
     }
 }

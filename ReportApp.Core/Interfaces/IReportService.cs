@@ -12,5 +12,7 @@ namespace ReportApp.Core.Interfaces
         Task CreateReportAsync(ReportDto report);
         Task UpdateReportAsync(ReportDto report);
         Task DeleteReportAsync(Int32 id);
+        Task<Boolean> HasSprintReportAsync();
+        Task<ReportDto> GetSprintReportAsync();
     }
 }

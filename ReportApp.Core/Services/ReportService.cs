@@ -41,6 +41,7 @@ namespace ReportApp.Core.Services
         public async Task CreateReportAsync(ReportDto report)
         {
             var reportEntity = _mapper.Map<ReportEntity>(report);
+            if (await _repository.HasSprintReportAsync()) return;
             await _repository.InsertAsync(reportEntity);
             await _repository.SaveAsync();
         }
@@ -56,6 +57,20 @@ namespace ReportApp.Core.Services
         {
             await _repository.DeleteAsync(id);
             await _repository.SaveAsync();
+        }
+
+        public async Task<Boolean> HasSprintReportAsync()
+        {
+            return await _repository.HasSprintReportAsync();
+        }
+
+        public async Task<ReportDto> GetSprintReportAsync()
+        {
+            var reports = await _repository.GetAllAsync();
+            return _mapper.Map<ReportDto>(reports
+                .ToList()
+                .FirstOrDefault(r => r.Type == ReportType.Sprint)
+            );
         }
     }
 }
