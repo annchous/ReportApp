@@ -10,9 +10,6 @@ namespace ReportApp.Core.DTO
         public Int32 Id { get; set; }
         public String Name { get; set; }
         public Int32? LeaderId { get; set; }
-        //public EmployeeDto Leader { get; set; }
-        //public IEnumerable<TaskDto> Tasks { get; set; }
-        //public IEnumerable<EmployeeDto> Employees { get; set; }
     }
 
     public static class EmployeeMapper
