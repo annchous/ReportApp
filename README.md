@@ -35,10 +35,10 @@ The presentation layer works with the data stored in the database not directly, 
 Here, through the **services**, the database entities are converted to **Data Transfer Object (DTO)** and provided for further interaction with the user to the **Presentation Layer** layer.
 
 Contains:
-* [DTO]()
-* [Interfaces for Services]()
-* [Services realisations]()
-* [Mappers]() for mapping using `AutoMapper` libary
+* [DTO](https://github.com/annchous/ReportApp/tree/master/ReportApp.Core/DTO)
+* [Interfaces for Services](https://github.com/annchous/ReportApp/tree/master/ReportApp.Core/Interfaces)
+* [Services realisations](https://github.com/annchous/ReportApp/tree/master/ReportApp.Core/Services)
+* [Mappers](https://github.com/annchous/ReportApp/tree/master/ReportApp.Core/Mappers) for mapping using `AutoMapper` libary
 
 
 ### Presentation Layer (aka UI)
