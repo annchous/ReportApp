@@ -43,3 +43,9 @@ Contains:
 
 ### Presentation Layer (aka UI)
 
+![pl](https://github.com/annchous/ReportApp/blob/master/staff/pl.png)
+
+
+Direct user interaction layer. Made with technology Blazor WebAssembly (hosted on ASP.NET Core).
+
+The **Server** side of the application contains [API Controllers](https://github.com/annchous/ReportApp/tree/master/ReportApp/Server/Controllers). The **Client** part contains [page layout](https://github.com/annchous/ReportApp/tree/master/ReportApp/Client/Pages).
