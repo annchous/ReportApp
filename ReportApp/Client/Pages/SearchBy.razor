@@ -1,0 +1,74 @@
+﻿@page "/search"
+
+@using ReportApp.Core.DTO
+
+@inject HttpClient Http
+
+<h3>Search task</h3>
+<br />
+
+@if (_tasks is null)
+{
+    <p><MatProgressBar Indeterminate="true"></MatProgressBar></p>
+}
+else
+{
+    <div>
+        <MatTabGroup>
+            <MatTab Label="By ID">
+                <br />
+                <p>
+                    <MatTextField @bind-Value="@_taskId" Label="Task ID" Outlined="true" Style="width: 1200px"></MatTextField>
+                    &nbsp;
+                    <MatButton Raised="true">Search</MatButton>
+                </p>
+            </MatTab>
+            <MatTab Label="By Date">
+                
+            </MatTab>
+            <MatTab Label="By Employee">
+                <br />
+                <p>
+                    <MatTextField @bind-Value="@_employeeId" Label="Employee ID" Outlined="true" Style="width: 1200px"></MatTextField>
+                    &nbsp;
+                    <MatButton Raised="true">Search</MatButton>
+                </p>
+            </MatTab>
+            <MatTab Label="By changes">
+                <br />
+                <p>
+                    <MatTextField @bind-Value="@_employeeId" Label="Employee ID" Outlined="true" Style="width: 1200px"></MatTextField>
+                    &nbsp;
+                    <MatButton Raised="true">Search</MatButton>
+                </p>
+            </MatTab>
+            <MatTab Label="By employer's employees">
+                <br />
+                <p>
+                    <MatTextField @bind-Value="@_employeeId" Label="Employee ID" Outlined="true" Style="width: 1200px"></MatTextField>
+                    &nbsp;
+                    <MatButton Raised="true">Search</MatButton>
+                </p>
+            </MatTab>
+
+        </MatTabGroup>
+        <br />
+    </div>
+}
+
+@code {
+    private Int32 _taskId;
+    private DateTime _date;
+    private Int32 _employeeId;
+    private List<TaskDto> _tasks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _tasks = await Http.GetFromJsonAsync<List<TaskDto>>("api/task/get-all");
+    }
+
+    private async Task<TaskDto> GetTaskById()
+    {
+        return await Http.GetFromJsonAsync<TaskDto>($"api/task/get-id/{_taskId}");
+    }
+}

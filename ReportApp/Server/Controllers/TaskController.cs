@@ -35,6 +35,22 @@ namespace ReportApp.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("get-date/{date}")]
+        public async Task<ActionResult<TaskDto>> GetTaskByDateAsync(DateTime date)
+        {
+            var tasks = await _taskService.GetAllAsync();
+            var result = tasks.Where(t => t.StartDate == date);
+            return Ok(result);
+        }
+
+        [HttpGet("get-employeeId/{employeeId}")]
+        public async Task<ActionResult<List<TaskDto>>> GetTasksByEmployeeIdAsync(Int32 employeeId)
+        {
+            var tasks = await _taskService.GetAllAsync();
+            var result = tasks.Where(t => t.EmployeeId == employeeId);
+            return Ok(result);
+        }
+
         [HttpPost("add")]
         public async Task<ActionResult> CreateTaskAsync(TaskDto task)
         {

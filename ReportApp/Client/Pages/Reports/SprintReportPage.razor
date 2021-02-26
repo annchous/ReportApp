@@ -7,7 +7,7 @@
 <h3>@_header</h3>
 <br />
 
-@if (_report == null)
+@if (_report is null)
 {
     <p><MatProgressBar Indeterminate="true"></MatProgressBar></p>
 }
@@ -31,12 +31,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var hasSprint = await Http.GetFromJsonAsync<Boolean>("api/report/has-sprint");
-        if (!hasSprint)
-        {
-            _header = "No sprint report";
-            return;
-        }
+        //var hasSprint = await Http.GetFromJsonAsync<Boolean>("api/report/has-sprint");
+        //if (!hasSprint)
+        //{
+        //    _header = "No sprint report";
+        //    return;
+        //}
         _report = await Http.GetFromJsonAsync<ReportDto>("api/report/get-sprint");
     }
 }
