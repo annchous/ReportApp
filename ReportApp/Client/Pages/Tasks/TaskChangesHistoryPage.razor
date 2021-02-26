@@ -36,11 +36,4 @@ else
 @code {
     [Parameter]
     public Int32 TaskId { get; set; }
-    private List<TaskChangeDto> _taskChanges;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _taskChanges = await Http.GetFromJsonAsync<List<TaskChangeDto>>($"api/taskchange/get-taskId/{TaskId}");
-    }
-
 }

@@ -1,7 +1,5 @@
 ﻿@page "/employee/profile/{EmployeeId:int}"
 
-@using ReportApp.Core.DTO
-
 @inject HttpClient Http
 
 <h3>Employee profile</h3>
@@ -38,11 +36,4 @@ else
 @code {
     [Parameter]
     public Int32 EmployeeId { get; set; }
-
-    private EmployeeDto _employee = new EmployeeDto();
-
-    protected override async Task OnInitializedAsync()
-    {
-        _employee = await Http.GetFromJsonAsync<EmployeeDto>($"api/employee/get-id/{EmployeeId}");
-    }
 }

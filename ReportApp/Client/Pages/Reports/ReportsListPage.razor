@@ -1,7 +1,5 @@
 ﻿@page "/allreports"
 
-@using ReportApp.Core.DTO
-@using System.Text
 @using System.Globalization
 
 @inject HttpClient Http
@@ -45,24 +43,4 @@ else
 
     </MatAccordion>
     <br />
-}
-
-@code {
-    private List<ReportDto> _reports;
-    private List<EmployeeDto> _employees;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _reports = await Http.GetFromJsonAsync<List<ReportDto>>("api/report/get-all");
-        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
-    }
-
-    private async Task OpenTask(Int32 taskId)
-    {
-        var task = await Http.GetFromJsonAsync<TaskDto>($"api/task/get-id/{taskId}");
-        await MatDialogService.AlertAsync(new StringBuilder()
-            .Append($"[{task.Id}] ")
-            .Append(task.Name)
-            .ToString());
-    }
 }

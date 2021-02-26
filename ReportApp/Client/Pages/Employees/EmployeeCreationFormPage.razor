@@ -1,7 +1,5 @@
 ﻿@page "/newemployee"
 
-@using ReportApp.Core.DTO
-
 @inject HttpClient Http
 
 <h3>New employee</h3>
@@ -16,7 +14,7 @@
             Leader ID: <br />
             <MatSelectItem @bind-Value="@_selectedEmployeeDto" Items="@_employees" Disabled="@Disabled" Outlined="true">
                 <ItemTemplate Context="e">
-                    <span>[@e?.Id] @e.Name</span>
+                    <span>[@e?.Id] @e?.Name</span>
                 </ItemTemplate>
             </MatSelectItem>
             &nbsp;
@@ -32,24 +30,3 @@
     </div>
     <br />
 </EditForm>
-
-@code {
-    private EmployeeDto _selectedEmployeeDto;
-    private EmployeeDto _employeeDto = new EmployeeDto();
-    private List<EmployeeDto> _employees = new List<EmployeeDto>();
-
-    private Boolean _noLeader;
-    public Boolean Disabled => _noLeader;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _employees = await Http.GetFromJsonAsync<List<EmployeeDto>>("api/employee/get-all");
-    }
-
-    private async Task SubmitNewEmployee()
-    {
-        await Http.PostAsJsonAsync<EmployeeDto>("api/employee/add", _employeeDto);
-    }
-
-    private void ResetEmployee() => _employeeDto = new EmployeeDto();
-}
